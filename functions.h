@@ -5,13 +5,22 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <string.h>
+#include <time.h>
 
 struct User {
-    char name[11];
+    char name[21];
     char id[21];
     char pw[21];
 };
 
-void signup();
+struct Message {
+    char message[1024];
+    char sender[21];
+    char time[20];
+};
 
+void signup();
 int signin(char i[], char p[], struct User *result);
+
+void send_message(struct User sender);
+void check_message(struct User user);

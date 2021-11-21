@@ -8,10 +8,13 @@
 #include "functions.h"
 
 int main(void) {
-    int fd;
-    char * pathname = "./userlist.txt";
     char id[21], pw[21];
     struct User user;
+
+    if (chdir("datas") == -1){
+        mkdir("datas", 0755);
+        chdir("datas");
+    }
 
 signin:
     printf("****************로그인****************\n");
@@ -20,6 +23,7 @@ signin:
     printf("ID: ");
     scanf("%s", id);
     if (strcmp(id, "signup") == 0) {
+        printf("\n");
         signup();
 
         goto signin;
@@ -31,19 +35,34 @@ signin:
     else {
         printf("PW: ");
         scanf("%s", pw);
-        /*int i = 0;
-        while (1){
-            pw[i] = getch();
-            putch('*');
-            if (pw[i++] == '\n')
-                break;
-        }*/
     }
     
     int s = signin(id, pw, &user);
     if (s == 0)
         goto signin;
-    printf("\n%s님 안녕하세요.\n", user.name); 
+    printf("\n%s님 안녕하세요.\n\n", user.name); 
+
+    while (1) {
+        int menu;
+        printf("***메뉴선택***\n");
+        printf("1.메세지 보내기\n2.메세지 확인하기\n3.로그아웃\n번호입력: ");
+        scanf("%d", &menu);
+        if (menu == 1) 
+            send_message(user);
+        else if (menu == 2)
+            check_message(user);
+        else if (menu == 3){
+            printf("\n");
+            goto signin;
+        }
+        else {
+            printf("\n");
+            continue;
+        }
+    }
+
+
+
 
     return 0;
 }
